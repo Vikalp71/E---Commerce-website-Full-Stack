@@ -18,7 +18,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://e-commerce-application-nine-theta.vercel.app",
+      "https://e-commerce-website-full-stack-lilac.vercel.app",
     ],
     credentials: true,
   })
