@@ -13,7 +13,7 @@ export default function ProductDetails() {
   return (
     <section className="detail">
       <img
-        src={p.image || "https://via.placeholder.com/600x450?text=Product"}
+        src={p.image || "/src/assets/images/electronics.jpg"}
       />
       <div>
         <small>{p.category?.name}</small>

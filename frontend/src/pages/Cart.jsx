@@ -103,7 +103,7 @@ export default function Cart() {
             {cart.items.filter((item) => item.product).map((i) => (
               <div className="cartrow" key={i.product._id}>
                 <img
-                  src={i.product.image || "https://via.placeholder.com/100"}
+                  src={i.product.image || "/src/assets/images/electronics.jpg"}
                 />
                 <div>
                   <h3>{i.product.name}</h3>

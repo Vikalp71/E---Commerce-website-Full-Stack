@@ -8,7 +8,7 @@ export default function ProductCard({ p }) {
   return (
     <article className="card">
       <img
-        src={p.image || "https://via.placeholder.com/400x300?text=Product"}
+        src={p.image || "/src/assets/images/electronics.jpg"}
       />
       <div>
         <small>{p.category?.name}</small>

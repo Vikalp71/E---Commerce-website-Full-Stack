@@ -21,14 +21,14 @@ export default function Home() {
     <>
       <section className="hero">
         <div>
-          <span className="eyebrow">MEGA SALE • UP TO 30% OFF</span>
-          <h1>Everything you need, in one place.</h1>
+          <span className="eyebrow">THE NEW WAY TO SHOP</span>
+          <h1> Curated For Your
+  Everyday Life.</h1>
           <p>
-            Shop electronics, fashion, footwear, accessories and more with great
-            deals.
+         Explore a refined collection of technology, fashion, lifestyle and everyday essentials — carefully selected to make shopping simpler.
           </p>
           <Link className="btn" to="/products">
-            Shop Now
+            Explore Now
           </Link>
         </div>
       </section>

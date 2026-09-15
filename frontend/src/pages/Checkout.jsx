@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+
 
 export default function Checkout() {
   const { total, cart } = useCart();
@@ -39,94 +39,338 @@ export default function Checkout() {
       pincode: d.pincode,
     };
 
-    if (d.paymentMethod === "COD") {
-      nav("/payment", {
-        state: {
-          shippingAddress,
-          paymentMethod: "COD",
-          total,
-        },
-      });
-    } else {
-      nav("/payment", {
-        state: {
-          shippingAddress,
-          paymentMethod: "ONLINE",
-          total,
-        },
-      });
-    }
+    nav("/payment", {
+      state: {
+        shippingAddress,
+        paymentMethod: d.paymentMethod,
+        total,
+      },
+    });
   };
 
   return (
-    <section className="auth">
-      <form onSubmit={submit}>
-        <h1>Checkout</h1>
+    <section className="checkout-page">
+      <div className="checkout-container">
 
-        {err && <p className="error">{err}</p>}
+        {/* Header */}
+        <div className="checkout-header">
+          <div>
+            <span className="checkout-label">SECURE CHECKOUT</span>
+            <h1>Complete Your Order</h1>
+            <p>Enter your delivery details and choose your preferred payment method.</p>
+          </div>
 
-        <input
-          name="fullName"
-          placeholder="Full name"
-          required
-        />
+          <div className="secure-badge">
+            <span>🔒</span>
+            <div>
+              <strong>Secure Checkout</strong>
+              <small>Your information is protected</small>
+            </div>
+          </div>
+        </div>
 
-        <input
-          name="phone"
-          type="tel"
-          placeholder="Enter 10-digit mobile number"
-          maxLength="10"
-          inputMode="numeric"
-          onInput={(e) => {
-            e.target.value = e.target.value
-              .replace(/\D/g, "")
-              .slice(0, 10);
-          }}
-          required
-        />
+        {/* Progress */}
+        <div className="checkout-progress">
+          <div className="progress-step active">
+            <span>1</span>
+            <p>Cart</p>
+          </div>
 
-        <textarea
-          name="address"
-          placeholder="Complete address"
-          required
-        />
+          <div className="progress-line active"></div>
 
-        <input
-          name="city"
-          placeholder="City"
-          required
-        />
+          <div className="progress-step active">
+            <span>2</span>
+            <p>Checkout</p>
+          </div>
 
-        <input
-          name="state"
-          placeholder="State"
-          required
-        />
+          <div className="progress-line"></div>
 
-        <input
-          name="pincode"
-          placeholder="6-digit pincode"
-          maxLength="6"
-          inputMode="numeric"
-          onInput={(e) => {
-            e.target.value = e.target.value
-              .replace(/\D/g, "")
-              .slice(0, 6);
-          }}
-          required
-        />
+          <div className="progress-step">
+            <span>3</span>
+            <p>Payment</p>
+          </div>
+        </div>
 
-        <select name="paymentMethod">
-          <option value="COD">Cash on Delivery</option>
-          <option value="ONLINE">Online Payment</option>
-        </select>
+        <form onSubmit={submit} className="checkout-grid">
 
-        <h3>Order Total: ₹{total}</h3>
+          {/* LEFT SIDE */}
+          <div className="checkout-left">
 
-        <button className="btn">
-          Continue
-        </button>
-      </form>
+            {/* Shipping Address */}
+            <div className="checkout-card">
+              <div className="card-heading">
+                <div className="heading-icon">📍</div>
+                <div>
+                  <h2>Delivery Address</h2>
+                  <p>Where should we deliver your order?</p>
+                </div>
+              </div>
+
+              {err && (
+                <div className="checkout-error">
+                  <span>⚠️</span>
+                  {err}
+                </div>
+              )}
+
+              <div className="form-grid">
+
+                <div className="form-group full">
+                  <label>Full Name</label>
+                  <input
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Mobile Number</label>
+                  <div className="input-with-icon">
+                    <span>📱</span>
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="10-digit mobile number"
+                      maxLength="10"
+                      inputMode="numeric"
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 10);
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Pincode</label>
+                  <div className="input-with-icon">
+                    <span>📮</span>
+                    <input
+                      name="pincode"
+                      placeholder="6-digit pincode"
+                      maxLength="6"
+                      inputMode="numeric"
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 6);
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group full">
+                  <label>Complete Address</label>
+                  <textarea
+                    name="address"
+                    placeholder="House / Flat no., Street, Area..."
+                    rows="4"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>City</label>
+                  <input
+                    name="city"
+                    placeholder="Enter city"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>State</label>
+                  <input
+                    name="state"
+                    placeholder="Enter state"
+                    required
+                  />
+                </div>
+
+              </div>
+            </div>
+
+            {/* Payment */}
+            <div className="checkout-card payment-card">
+              <div className="card-heading">
+                <div className="heading-icon">💳</div>
+                <div>
+                  <h2>Payment Method</h2>
+                  <p>Choose how you want to pay</p>
+                </div>
+              </div>
+
+              <div className="payment-options">
+
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="COD"
+                    defaultChecked
+                  />
+
+                  <div className="payment-icon cod-icon">
+                    💵
+                  </div>
+
+                  <div className="payment-info">
+                    <strong>Cash on Delivery</strong>
+                    <span>Pay when your order arrives</span>
+                  </div>
+
+                  <div className="radio-circle"></div>
+                </label>
+
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="ONLINE"
+                  />
+
+                  <div className="payment-icon online-icon">
+                    💳
+                  </div>
+
+                  <div className="payment-info">
+                    <strong>Online Payment</strong>
+                    <span>UPI, Cards, Net Banking & more</span>
+                  </div>
+
+                  <div className="radio-circle"></div>
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDE */}
+          <aside className="checkout-right">
+
+            <div className="order-summary">
+
+              <div className="summary-header">
+                <div>
+                  <span className="summary-label">YOUR ORDER</span>
+                  <h2>Order Summary</h2>
+                </div>
+
+                <span className="item-count">
+                  {cart.items?.length || 0} Items
+                </span>
+              </div>
+
+              <div className="summary-products">
+
+                {cart.items?.map((item) => (
+                  <div className="summary-product" key={item.product?._id || item._id}>
+
+                    <div className="product-image">
+                      <img
+                        src={item.product?.image || "/placeholder.png"}
+                        alt={item.product?.name || "Product"}
+                      />
+                    </div>
+
+                    <div className="product-details">
+                      <h4>{item.product?.name || "Product"}</h4>
+
+                      <span>
+                        Qty: {item.quantity}
+                      </span>
+
+                      <strong>
+                        ₹{(item.product?.price || 0) * item.quantity}
+                      </strong>
+                    </div>
+
+                  </div>
+                ))}
+
+              </div>
+
+              <div className="summary-divider"></div>
+
+              <div className="price-row">
+                <span>Subtotal</span>
+                <strong>₹{total}</strong>
+              </div>
+
+              <div className="price-row">
+                <span>Delivery</span>
+                <strong className="free">FREE</strong>
+              </div>
+
+              <div className="price-row">
+                <span>Tax</span>
+                <strong>Included</strong>
+              </div>
+
+              <div className="summary-divider"></div>
+
+              <div className="total-row">
+                <div>
+                  <span>Total Amount</span>
+                  <small>Inclusive of all taxes</small>
+                </div>
+
+                <strong>₹{total}</strong>
+              </div>
+
+              <button type="submit" className="place-order-btn">
+                Continue to Payment
+                <span>→</span>
+              </button>
+
+              <div className="secure-message">
+                🔒 Safe & Secure Payment
+              </div>
+
+            </div>
+
+            <div className="checkout-benefits">
+
+              <div>
+                <span>🚚</span>
+                <div>
+                  <strong>Free Delivery</strong>
+                  <small>On your entire order</small>
+                </div>
+              </div>
+
+              <div>
+                <span>↩️</span>
+                <div>
+                  <strong>Easy Returns</strong>
+                  <small>Hassle-free returns</small>
+                </div>
+              </div>
+
+              <div>
+                <span>🛡️</span>
+                <div>
+                  <strong>Secure Payment</strong>
+                  <small>100% protected checkout</small>
+                </div>
+              </div>
+
+            </div>
+
+          </aside>
+
+        </form>
+      </div>
     </section>
   );
 }
+
+
+
+
+
