@@ -93,6 +93,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import ProductCard from "../components/ProductCard";
+import { normalizeImageUrl } from "../utils/asset";
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
@@ -100,31 +101,15 @@ export default function Home() {
   const [cats, setCats] = useState([]);
 
   useEffect(() => {
-    const loadHome = async () => {
-      try {
-        const [f, t, c] = await Promise.all([
-          api.get("/products?featured=true&limit=8"),
-          api.get("/products?trending=true&limit=8"),
-          api.get("/categories"),
-        ]);
-
-        console.log("FEATURED:", f.data);
-        console.log("TRENDING:", t.data);
-        console.log("CATEGORIES:", c.data);
-
-        setFeatured(Array.isArray(f.data?.items) ? f.data.items : []);
-        setTrending(Array.isArray(t.data?.items) ? t.data.items : []);
-        setCats(Array.isArray(c.data) ? c.data : []);
-      } catch (error) {
-        console.error("HOME API ERROR:", error);
-
-        setFeatured([]);
-        setTrending([]);
-        setCats([]);
-      }
-    };
-
-    loadHome();
+    Promise.all([
+      api.get("/products?featured=true&limit=8"),
+      api.get("/products?trending=true&limit=8"),
+      api.get("/categories"),
+    ]).then(([f, t, c]) => {
+      setFeatured(f.data.items);
+      setTrending(t.data.items);
+      setCats(c.data);
+    });
   }, []);
 
   return (
@@ -164,7 +149,7 @@ export default function Home() {
               key={x._id}
               to={"/products?category=" + x._id}
             >
-              <img src={x.image} alt={x.name} />
+              <img src={normalizeImageUrl(x.image)} alt={x.name} />
               <strong>{x.name}</strong>
             </Link>
           ))}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { normalizeImageUrl } from "../utils/asset";
 
 
 export default function Checkout() {
@@ -273,7 +274,7 @@ export default function Checkout() {
 
                     <div className="product-image">
                       <img
-                        src={item.product?.image || "/placeholder.png"}
+                        src={normalizeImageUrl(item.product?.image) || "/placeholder.png"}
                         alt={item.product?.name || "Product"}
                       />
                     </div>

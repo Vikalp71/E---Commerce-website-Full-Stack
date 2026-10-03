@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
+import { normalizeImageUrl } from "../utils/asset";
 
 export function Orders() {
   const [o, setO] = useState([]);
@@ -48,16 +49,14 @@ export function Orders() {
               {x.items.slice(0, 4).map((item, index) => (
                 <img
                   key={index}
-                  src={item.image}
+                  src={normalizeImageUrl(item.image)}
                   alt={item.name}
                   className="order-preview-image"
                 />
               ))}
 
               {x.items.length > 4 && (
-                <div className="more-products">
-                  +{x.items.length - 4}
-                </div>
+                <div className="more-products">+{x.items.length - 4}</div>
               )}
             </div>
 
@@ -67,10 +66,7 @@ export function Orders() {
                 <h2>₹{x.totalAmount}</h2>
               </div>
 
-              <Link
-                className="view-order-btn"
-                to={"/orders/" + x._id}
-              >
+              <Link className="view-order-btn" to={"/orders/" + x._id}>
                 View Details →
               </Link>
             </div>
@@ -122,7 +118,6 @@ export function OrderDetails() {
 
   return (
     <section className="section order-details-page">
-
       <div className="details-header">
         <div>
           <p className="order-label">ORDER DETAILS</p>
@@ -138,15 +133,12 @@ export function OrderDetails() {
         </span>
       </div>
 
-      {/* TRACKING */}
-
       <div className="tracking-card">
         <h2>🚚 Track Your Order</h2>
 
         <div className="tracking-container">
           {steps.map((step, index) => (
             <div className="tracking-step" key={step}>
-
               <div
                 className={`tracking-circle ${
                   index <= currentStep ? "completed" : ""
@@ -172,7 +164,6 @@ export function OrderDetails() {
                   }`}
                 />
               )}
-
             </div>
           ))}
         </div>
@@ -183,17 +174,13 @@ export function OrderDetails() {
       </div>
 
       <div className="details-grid">
-
-        {/* ITEMS */}
-
         <div className="details-card items-card">
           <h2>🛍️ Ordered Items</h2>
 
           {o.items.map((i, n) => (
             <div className="order-item" key={n}>
-
               <img
-                src={i.image}
+                src={normalizeImageUrl(i.image)}
                 alt={i.name}
                 className="order-item-image"
               />
@@ -204,10 +191,7 @@ export function OrderDetails() {
                 <span>₹{i.price} × {i.quantity}</span>
               </div>
 
-              <strong className="item-total">
-                ₹{i.price * i.quantity}
-              </strong>
-
+              <strong className="item-total">₹{i.price * i.quantity}</strong>
             </div>
           ))}
 
@@ -217,10 +201,7 @@ export function OrderDetails() {
           </div>
         </div>
 
-        {/* PAYMENT */}
-
         <div className="right-details">
-
           <div className="details-card payment-card">
             <h2>💳 Payment Details</h2>
 
@@ -250,8 +231,6 @@ export function OrderDetails() {
             )}
           </div>
 
-          {/* DELIVERY */}
-
           <div className="details-card address-card">
             <h2>📍 Delivery Address</h2>
 
@@ -272,10 +251,8 @@ export function OrderDetails() {
               PIN: {o.shippingAddress.pincode}
             </p>
           </div>
-
         </div>
       </div>
-
     </section>
   );
 }

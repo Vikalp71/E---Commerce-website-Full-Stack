@@ -2,14 +2,20 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import "./components.css";
+
+const getProductImage = (src) => {
+  if (!src) return "/images/electronics.jpg";
+  return src.startsWith("/src/assets/images/")
+    ? src.replace("/src/assets/images/", "/images/")
+    : src;
+};
+
 export default function ProductCard({ p }) {
   const { change } = useCart();
   const { user } = useAuth();
   return (
     <article className="card">
-      <img
-        src={p.image || "/src/assets/images/electronics.jpg"}
-      />
+      <img src={getProductImage(p.image)} alt={p.name} />
       <div>
         <small>{p.category?.name}</small>
         <h3>{p.name}</h3>

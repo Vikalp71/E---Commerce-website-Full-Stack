@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { useCart } from "../context/CartContext";
+
+const getProductImage = (src) => {
+  if (!src) return "/images/electronics.jpg";
+  return src.startsWith("/src/assets/images/")
+    ? src.replace("/src/assets/images/", "/images/")
+    : src;
+};
+
 export default function ProductDetails() {
   const { id } = useParams();
   const [p, setP] = useState(null);
@@ -12,9 +20,7 @@ export default function ProductDetails() {
   if (!p) return <section className="section">Loading...</section>;
   return (
     <section className="detail">
-      <img
-        src={p.image || "/src/assets/images/electronics.jpg"}
-      />
+      <img src={getProductImage(p.image)} alt={p.name} />
       <div>
         <small>{p.category?.name}</small>
         <h1>{p.name}</h1>

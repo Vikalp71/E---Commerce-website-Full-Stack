@@ -77,6 +77,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+
+const getProductImage = (src) => {
+  if (!src) return "/images/electronics.jpg";
+  return src.startsWith("/src/assets/images/")
+    ? src.replace("/src/assets/images/", "/images/")
+    : src;
+};
+
 export default function Cart() {
   const { cart, total, change } = useCart();
   const { user } = useAuth();
@@ -102,9 +110,7 @@ export default function Cart() {
           <div className="cart">
             {cart.items.filter((item) => item.product).map((i) => (
               <div className="cartrow" key={i.product._id}>
-                <img
-                  src={i.product.image || "/src/assets/images/electronics.jpg"}
-                />
+                <img src={getProductImage(i.product.image)} alt={i.product.name} />
                 <div>
                   <h3>{i.product.name}</h3>
                   <p>₹{i.product.discountPrice || i.product.price}</p>
